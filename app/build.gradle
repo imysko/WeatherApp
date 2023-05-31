@@ -59,6 +59,7 @@ dependencies {
 
     // https://developer.android.com/jetpack/androidx/releases/compose-material3
     implementation("androidx.compose.material3:material3:1.2.0-alpha02")
+    implementation("androidx.compose.material:material-icons-extended-android:1.5.0-beta01")
 
     // https://square.github.io/okhttp/changelogs/changelog/
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.7")

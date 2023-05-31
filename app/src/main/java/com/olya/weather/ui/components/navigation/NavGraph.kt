@@ -1,4 +1,4 @@
-package com.olya.weather.ui.component.navigation
+package com.olya.weather.ui.components.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

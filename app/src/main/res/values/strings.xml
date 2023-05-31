@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Weather App</string>
+    <string name="favorite_towns">Избранные города</string>
+    <string name="back">Назад</string>
+    <string name="towns">Города</string>
+    <string name="favorites">Избранное</string>
 </resources>

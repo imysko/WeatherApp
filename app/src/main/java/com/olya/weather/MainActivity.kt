@@ -8,8 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.olya.weather.ui.component.navigation.NavGraph
-import com.progcorp.weather.ui.theme.WeatherTheme
+import com.olya.weather.ui.components.navigation.NavGraph
+import com.olya.weather.ui.theme.WeatherTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

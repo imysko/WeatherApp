@@ -1,4 +1,4 @@
-package com.progcorp.weather.ui.theme
+package com.olya.weather.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

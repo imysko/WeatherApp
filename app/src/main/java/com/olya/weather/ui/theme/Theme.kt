@@ -1,4 +1,4 @@
-package com.progcorp.weather.ui.theme
+package com.olya.weather.ui.theme
 
 import android.app.Activity
 import android.os.Build
