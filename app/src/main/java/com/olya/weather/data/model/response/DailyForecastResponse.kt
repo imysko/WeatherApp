@@ -1,4 +1,4 @@
-package com.olya.weather.data.model
+package com.olya.weather.data.model.response
 
 import com.google.gson.annotations.SerializedName
 

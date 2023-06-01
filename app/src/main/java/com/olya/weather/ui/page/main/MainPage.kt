@@ -25,12 +25,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.olya.weather.R
+import com.olya.weather.data.db.AppDatabase
 import com.olya.weather.data.enums.WeatherCode
 import com.olya.weather.domain.model.CurrentWeather
 import com.olya.weather.domain.model.DailyForecast
@@ -45,7 +47,9 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun MainPage(
     navController: NavHostController,
-    viewModel: MainViewModel = viewModel()
+    viewModel: MainViewModel = viewModel(
+        factory = MainViewModelFactory(AppDatabase.getInstance(LocalContext.current))
+    ),
 ) {
     val forecast by viewModel.forecast.observeAsState()
 
@@ -53,7 +57,7 @@ fun MainPage(
         forecast = forecast,
         onTownClick = {
             navController.navigate(NavDestinations.TownPage)
-        }
+        },
     )
 }
 
@@ -68,17 +72,18 @@ fun MainPage(
             TopAppBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = {
-                    Text(text = "Город")
+                    Text(text = stringResource(id = R.string.forecast))
                 },
                 actions = {
                     IconButton(
-                        onClick = { onTownClick() }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.LocationCity,
-                            contentDescription = stringResource(id = R.string.towns),
-                        )
-                    }
+                        onClick = { onTownClick() },
+                        content = {
+                            Icon(
+                                imageVector = Icons.Rounded.LocationCity,
+                                contentDescription = stringResource(id = R.string.towns),
+                            )
+                        },
+                    )
                 },
             )
         },
@@ -118,16 +123,18 @@ fun CurrentWeatherCard(
             )
 
             val weatherCode = WeatherCode from currentWeather.weatherCode
-            Text(
-                modifier = Modifier.padding(bottom = 15.dp),
-                text = weatherCode!!.title,
-                style = MaterialTheme.typography.titleMedium,
-            )
+            weatherCode?.let { code ->
+                Text(
+                    modifier = Modifier.padding(bottom = 15.dp),
+                    text = code.title,
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            }
         }
 
         Row {
             Text(
-                text = "15.3° / 9.3°",
+                text = "${currentWeather.maxTemperature}° / ${currentWeather.minTemperature}°",
                 style = MaterialTheme.typography.titleMedium,
             )
         }
@@ -156,10 +163,12 @@ fun HourlyForecastList(
                 )
 
                 val weatherCode = WeatherCode from forecast.weatherCode
-                Icon(
-                    imageVector = weatherCode!!.icon,
-                    contentDescription = "",
-                )
+                weatherCode?.let { code ->
+                    Icon(
+                        imageVector = code.icon,
+                        contentDescription = code.title,
+                    )
+                }
 
                 Text(text = "${forecast.temperature}°")
             }
@@ -194,7 +203,9 @@ fun DailyForecastList(
                     )
 
                     val weatherCode = WeatherCode from forecast.weatherCode
-                    Text(text = weatherCode!!.title)
+                    weatherCode?.let { code ->
+                        Text(text = code.title)
+                    }
 
                     Text(text = "${forecast.temperatureMax}°/${forecast.temperatureMin}°")
                 }

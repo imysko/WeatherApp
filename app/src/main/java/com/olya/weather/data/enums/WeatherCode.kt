@@ -174,15 +174,15 @@ enum class WeatherCode(
     ),
 
     THUNDERSTORM(
-    code = 96,
-    icon = Icons.Outlined.Thunderstorm,
-    title = "Гроза"
+        code = 96,
+        icon = Icons.Outlined.Thunderstorm,
+        title = "Гроза"
     ),
 
     THUNDERSTORM_HAIL(
-    code = 99,
-    icon = Icons.Outlined.Thunderstorm,
-    title = "Гроза с градом"
+        code = 99,
+        icon = Icons.Outlined.Thunderstorm,
+        title = "Гроза с градом"
     );
 
     companion object {

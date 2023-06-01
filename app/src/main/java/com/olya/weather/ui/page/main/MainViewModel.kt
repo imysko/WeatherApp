@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.olya.weather.data.db.AppDatabase
 import com.olya.weather.data.service.ForecastService
 import com.olya.weather.domain.model.CurrentWeather
 import com.olya.weather.domain.model.DailyForecast
@@ -14,7 +15,9 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MainViewModel : ViewModel() {
+class MainViewModel(
+    private val _db: AppDatabase
+) : ViewModel() {
     private val _forecast = MutableLiveData<Forecast>()
     val forecast: LiveData<Forecast> = _forecast
 
@@ -29,14 +32,6 @@ class MainViewModel : ViewModel() {
     private val _timezone = MutableLiveData<String>().apply {
         value = "Asia/Irkutsk"
     }
-
-    // private val _currentDateTime = MutableLiveData<LocalDateTime>().apply {
-    //     value = LocalDateTime.now()
-    // }
-
-    // private val _gson = GsonBuilder()
-    //     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-    //     .create()
 
     private val _retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())

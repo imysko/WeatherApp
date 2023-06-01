@@ -4,4 +4,7 @@
     <string name="back">Назад</string>
     <string name="towns">Города</string>
     <string name="favorites">Избранное</string>
+    <string name="search_town">Поиск города</string>
+    <string name="not_found">Не найдено</string>
+    <string name="forecast">Прогноз погоды</string>
 </resources>
