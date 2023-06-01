@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -37,6 +38,7 @@ import com.olya.weather.data.enums.WeatherCode
 import com.olya.weather.domain.model.CurrentWeather
 import com.olya.weather.domain.model.DailyForecast
 import com.olya.weather.domain.model.Forecast
+import com.olya.weather.domain.model.Geocoding
 import com.olya.weather.domain.model.HourlyForecast
 import com.olya.weather.ui.theme.WeatherTheme
 import com.olya.weather.util.NavDestinations
@@ -51,9 +53,16 @@ fun MainPage(
         factory = MainViewModelFactory(AppDatabase.getInstance(LocalContext.current))
     ),
 ) {
+    val selectedTown by viewModel.selectedTown.observeAsState()
     val forecast by viewModel.forecast.observeAsState()
 
+    LaunchedEffect(Unit) {
+        viewModel.getFirstTown()
+        viewModel.getForecast()
+    }
+
     MainPage(
+        selectedTown = selectedTown,
         forecast = forecast,
         onTownClick = {
             navController.navigate(NavDestinations.TownPage)
@@ -64,6 +73,7 @@ fun MainPage(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainPage(
+    selectedTown: Geocoding?,
     forecast: Forecast?,
     onTownClick: () -> Unit,
 ) {
@@ -94,6 +104,21 @@ fun MainPage(
                     .padding(top = padding.calculateTopPadding()),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
+                if (selectedTown != null) {
+                    Text(
+                        modifier = Modifier.padding(start = 30.dp),
+                        text = selectedTown.name,
+                        style = MaterialTheme.typography.displaySmall,
+                    )
+                }
+                else {
+                    Text(
+                        modifier = Modifier.padding(start = 30.dp),
+                        text = stringResource(id = R.string.town_not_selected),
+                        style = MaterialTheme.typography.displaySmall,
+                    )
+                }
+
                 forecast?.let { forecast ->
                     CurrentWeatherCard(currentWeather = forecast.currentWeather)
 
@@ -113,9 +138,11 @@ fun CurrentWeatherCard(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 20.dp, start = 25.dp),
+            .padding(start = 25.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp),
     ) {
+        Text(text = "")
+
         Row(verticalAlignment = Alignment.Bottom) {
             Text(
                 text = "${currentWeather.temperature}°",
@@ -279,6 +306,7 @@ fun DailyForecastListPreview() {
 fun MainPagePreview() {
     WeatherTheme {
         MainPage(
+            selectedTown = null,
             forecast = Forecast(
                 currentWeather = CurrentWeather(
                     temperature = 12f,

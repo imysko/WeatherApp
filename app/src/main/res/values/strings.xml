@@ -7,4 +7,5 @@
     <string name="search_town">Поиск города</string>
     <string name="not_found">Не найдено</string>
     <string name="forecast">Прогноз погоды</string>
+    <string name="town_not_selected">Город не выбран</string>
 </resources>
